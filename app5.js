@@ -63,4 +63,32 @@ app.get("/janken", (req, res) => {
   res.render( 'janken', display );
 });
 
+app.get("/roll-dice", (req, res) => {
+  const dice = Number(req.query.dice);
+  const allowedDice = [3, 4, 6, 8, 10, 12, 20, 100];
+
+  if (!allowedDice.includes(dice)) {
+    return res.status(400).send("Invalid dice size. Allowed values are 3, 4, 6, 8, 10, 12, 20, 100.");
+  }
+
+  const result = Math.floor(Math.random() * dice) + 1;
+
+  res.render('roll-dice', { dice: dice, result: result });
+});
+
+app.get("/image-color", (req, res) => {
+  const name = req.query.name;
+
+  if (!name) {
+    return res.status(400).send("名前を入力してください！");
+  }
+
+  const colors = [
+    "red", "blue", "green", "yellow", "orange", "purple", "pink", "black", "white", "gray"
+  ];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+  res.render('color', { name: name, color: randomColor });
+});
+
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
